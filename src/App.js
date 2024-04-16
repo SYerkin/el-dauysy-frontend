@@ -5,15 +5,14 @@ import HomePage from './pages/HomePage';
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import { AuthProvider } from './AuthContext'; 
+import {useAuth} from "./AuthContext"
 
 function App() {
     const location = useLocation();
-
     return (
         <AuthProvider>
             <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                 {location.pathname !== '/login' && <Header />}
-
                 <Routes>
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/" element={<ProtectedRoute />}/>

@@ -6,8 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { AuthContext } from '../path/to/AuthContext';
-import { db } from '../path/to/your/firebase-config'; 
+import { AuthContext, useAuth } from '../../AuthContext';
+import { db } from '../../firebase'; 
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 function Petitions() {
@@ -15,8 +15,8 @@ function Petitions() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [signatureCount, setSignatureCount] = useState('');
-    const { username } = useContext(AuthContext); 
-
+    // const { username } = useContext(AuthContext); 
+    const { currentUser } = useAuth();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -27,12 +27,13 @@ function Petitions() {
 
     const handleCreate = async () => {
         try {
+            console.log("username",currentUser)
             await addDoc(collection(db, "petitions"), {
                 title: title,
                 description: description,
                 signatureCount: parseInt(signatureCount, 10),
                 createdAt: serverTimestamp(),
-                author: username
+                author: currentUser
             });
             console.log("Document successfully written!");
             handleClose();
@@ -47,7 +48,7 @@ function Petitions() {
                 Create Petition
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a new Petition</DialogTitle>
+                <DialogTitle>Жаңа петиция құру</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus

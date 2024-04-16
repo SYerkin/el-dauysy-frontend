@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from "../App";
+import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router";
 import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -11,7 +11,7 @@ function LoginPage() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
-    const { setIsLogin } = useAuth();
+    const { setIsLogin, setCurrentUser } = useAuth();
     const [error, setError] = useState('');
     const handleLogin = async () => {
         const q = query(collection(db, "users"), where("login", "==", login), where("password", "==", password));
@@ -25,6 +25,7 @@ function LoginPage() {
                 querySnapshot.forEach((doc) => {
                     console.log(`${doc.id} => ${doc.data()}`);
                 });
+                setCurrentUser()
                 setIsLogin(true);
                 navigate("/");
             }
@@ -42,6 +43,7 @@ function LoginPage() {
             });
             console.log("Document written with ID: ", docRef.id);
             setIsLogin(true);
+            setCurrentUser(login)
             navigate("/");
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -126,7 +128,6 @@ function LoginPage() {
                         </Button>
                     )}
                 </Box>
-
             </div>
         </div>
     );
