@@ -36,8 +36,8 @@ function HomePage() {
                     </Button>
                 </nav>
                 <div>
-                    {activeTab === 'petiitions' && <div>Петициялар</div>}
-                    {activeTab === 'feed' && <Petitions /> }
+                    {activeTab === 'petiitions' && <Petitions /> }
+                    {activeTab === 'feed' && <div>Петициялар</div>}
                     {activeTab === 'myprofile' && <></>}
                 </div>
             </div>
